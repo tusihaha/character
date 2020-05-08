@@ -37,13 +37,11 @@ encode([H | T], Packed, Method, SpareType) ->
 encode([], Packed, Method, SpareType) ->
   case lists:keyfind(Method, 1, ?PACKING_7_SPARES) of
     {Method, {SpareType, Value}} ->
-      {ok, binary:encode_unsigned(binary:decode_unsigned(
-        <<Value:7, Packed/bitstring>>, little))
-      };
-      % {ok, <<Value:7, Packed/bitstring>>}; % without reverse
+      Result = binary:encode_unsigned(binary:decode_unsigned(
+        <<Value:7, Packed/bitstring>>, little));
     _ ->
-      {ok, binary:encode_unsigned(binary:decode_unsigned(
+      Result = binary:encode_unsigned(binary:decode_unsigned(
         <<0:SpareType, Packed/bitstring>>, little))
-      }
-      % {ok, <<0:SpareType, Packed/bitstring>>} % without reverse
-  end.
+  end,
+  io:format("Hex:~s~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Result]]),
+  {ok, SpareType, Result}.
