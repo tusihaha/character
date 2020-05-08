@@ -1,6 +1,6 @@
 # Character packing
 ### Export
-*start({PackingType, String}) -> {ok, SpareType, PackedString} | {error, Reason}*
+**start({PackingType, String}) -> {ok, SpareType, PackedString} | {error, Reason}**
 
 PackType: Loại packing `(sms, cbs, ussd)``
 SpareType: Số bit padding
